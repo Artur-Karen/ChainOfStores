@@ -12,6 +12,8 @@ namespace ChainOfStores.Data
         public DbSet<Bakery> Bakeries { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<Shop> Shops { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Salary> Salaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,8 +96,8 @@ namespace ChainOfStores.Data
                 });
 
             modelBuilder.Entity<Bakery>().HasData(
-                new Bakery {Id=1,ShopId=1},
-                new Bakery {Id=2, ShopId=2});
+                new Bakery {Id=1,PhoneNumber = "097547896",ShopId=1},
+                new Bakery {Id=2,PhoneNumber = "010986325", ShopId=2});
 
             modelBuilder.Entity<Shop>().HasData(
                 new Shop
@@ -114,13 +116,13 @@ namespace ChainOfStores.Data
                 });
 
             modelBuilder.Entity<Storage>().HasData(
-                new Storage {Id=1,ShopId = 1},
-                new Storage { Id=2, ShopId=2});
+                new Storage {Id=1,PhoneNumber = "066874532",ShopId = 1},
+                new Storage { Id=2,PhoneNumber = "022987321", ShopId=2});
 
             modelBuilder.Entity<Salary>().HasData(
-                new Salary { Id = 1, Name = "Junior" },
-                new Salary { Id = 2, Name = "Middle" },
-                new Salary { Id = 3, Name = "Senior" });
+                new Salary { Id = 1, Name = "Junior", BaseSalary=200 },
+                new Salary { Id = 2, Name = "Middle", BaseSalary=220 },
+                new Salary { Id = 3, Name = "Senior", BaseSalary=250 });
 
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Manager" },

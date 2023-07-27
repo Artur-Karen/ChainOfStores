@@ -14,7 +14,7 @@ namespace ChainOfStores.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,20 +23,21 @@ namespace ChainOfStores.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Salary",
+                name: "Salaries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BaseSalary = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Salary", x => x.Id);
+                    table.PrimaryKey("PK_Salaries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,6 +61,7 @@ namespace ChainOfStores.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -78,6 +80,7 @@ namespace ChainOfStores.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -115,14 +118,14 @@ namespace ChainOfStores.Migrations
                         principalTable: "Bakeries",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Employees_Role_RoleId",
+                        name: "FK_Employees_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Employees_Salary_SalaryId",
+                        name: "FK_Employees_Salaries_SalaryId",
                         column: x => x.SalaryId,
-                        principalTable: "Salary",
+                        principalTable: "Salaries",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_Shops_ShopId",
@@ -137,7 +140,7 @@ namespace ChainOfStores.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Role",
+                table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -149,13 +152,13 @@ namespace ChainOfStores.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Salary",
-                columns: new[] { "Id", "Name" },
+                table: "Salaries",
+                columns: new[] { "Id", "BaseSalary", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Junior" },
-                    { 2, "Middle" },
-                    { 3, "Senior" }
+                    { 1, 200, "Junior" },
+                    { 2, 220, "Middle" },
+                    { 3, 250, "Senior" }
                 });
 
             migrationBuilder.InsertData(
@@ -169,11 +172,11 @@ namespace ChainOfStores.Migrations
 
             migrationBuilder.InsertData(
                 table: "Bakeries",
-                columns: new[] { "Id", "ShopId" },
+                columns: new[] { "Id", "PhoneNumber", "ShopId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 2 }
+                    { 1, "097547896", 1 },
+                    { 2, "010986325", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -187,11 +190,11 @@ namespace ChainOfStores.Migrations
 
             migrationBuilder.InsertData(
                 table: "Storages",
-                columns: new[] { "Id", "ShopId" },
+                columns: new[] { "Id", "PhoneNumber", "ShopId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 2 }
+                    { 1, "066874532", 1 },
+                    { 2, "022987321", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -256,10 +259,10 @@ namespace ChainOfStores.Migrations
                 name: "Bakeries");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Salary");
+                name: "Salaries");
 
             migrationBuilder.DropTable(
                 name: "Storages");

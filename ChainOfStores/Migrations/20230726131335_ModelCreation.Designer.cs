@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChainOfStores.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230722133708_ModelCreation")]
+    [Migration("20230726131335_ModelCreation")]
     partial class ModelCreation
     {
         /// <inheritdoc />
@@ -33,6 +33,10 @@ namespace ChainOfStores.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
@@ -48,11 +52,13 @@ namespace ChainOfStores.Migrations
                         new
                         {
                             Id = 1,
+                            PhoneNumber = "097547896",
                             ShopId = 1
                         },
                         new
                         {
                             Id = 2,
+                            PhoneNumber = "010986325",
                             ShopId = 2
                         });
                 });
@@ -203,7 +209,7 @@ namespace ChainOfStores.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -241,28 +247,34 @@ namespace ChainOfStores.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BaseSalary")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Salary");
+                    b.ToTable("Salaries");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            BaseSalary = 200,
                             Name = "Junior"
                         },
                         new
                         {
                             Id = 2,
+                            BaseSalary = 220,
                             Name = "Middle"
                         },
                         new
                         {
                             Id = 3,
+                            BaseSalary = 250,
                             Name = "Senior"
                         });
                 });
@@ -316,6 +328,10 @@ namespace ChainOfStores.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
@@ -331,11 +347,13 @@ namespace ChainOfStores.Migrations
                         new
                         {
                             Id = 1,
+                            PhoneNumber = "066874532",
                             ShopId = 1
                         },
                         new
                         {
                             Id = 2,
+                            PhoneNumber = "022987321",
                             ShopId = 2
                         });
                 });

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChainOfStores.Models
 {
@@ -8,5 +9,8 @@ namespace ChainOfStores.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        [DisplayName("Base Salary")]
+        public int BaseSalary { get; set; }
     }
 }
