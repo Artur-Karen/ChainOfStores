@@ -37,11 +37,14 @@ namespace ChainOfStores.Controllers
                 {
                     _db.Bakeries.Add(obj);
                     _db.SaveChanges();
+                    TempData["success"] = "Bakery created successfully";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    ModelState.AddModelError("ShopId", "The all shops already have bakeries");
+                    //ModelState.AddModelError("ShopId", "The all shops already have bakeries");
+                    TempData["error"] = "All shops already have bakeries";
+                    return RedirectToAction("Index");
                 }
             }
 
@@ -65,6 +68,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Bakeries.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Bakery updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -89,6 +93,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Bakeries.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Bakery deleted successfully";
             return RedirectToAction("Index");
         }
     }

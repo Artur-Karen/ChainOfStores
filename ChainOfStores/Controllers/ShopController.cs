@@ -28,6 +28,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Shops.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Shop created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -50,6 +51,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Shops.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Shop updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -73,6 +75,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Shops.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Shop deleted successfully";
             return RedirectToAction("Index");
         }
     }

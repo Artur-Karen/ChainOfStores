@@ -29,6 +29,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Salaries.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Salary created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -51,6 +52,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Salaries.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Salary updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -74,6 +76,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Salaries.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Salary deleted successfully";
             return RedirectToAction("Index");
         }
     }

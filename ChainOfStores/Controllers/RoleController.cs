@@ -29,6 +29,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Roles.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Role created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -51,6 +52,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Roles.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Role updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -74,6 +76,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Roles.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Role deleted successfully";
             return RedirectToAction("Index");
         }
 

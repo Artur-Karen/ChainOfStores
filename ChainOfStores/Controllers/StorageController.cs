@@ -36,11 +36,14 @@ namespace ChainOfStores.Controllers
                 {
                     _db.Storages.Add(obj);
                     _db.SaveChanges();
+                    TempData["success"] = "Storage created successfully";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    ModelState.AddModelError("ShopId", "The all shops already have storages");
+                    TempData["error"] = "All shops already have storages";
+                    return RedirectToAction("Index");
+                    //ModelState.AddModelError("ShopId", "The all shops already have storages");
                 }
             }
             
@@ -63,7 +66,8 @@ namespace ChainOfStores.Controllers
             if (ModelState.IsValid)
             {
                 _db.Storages.Update(obj);
-                _db.SaveChanges(); 
+                _db.SaveChanges();
+                TempData["success"] = "Storage updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -88,6 +92,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Storages.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Storage deleted successfully";
             return RedirectToAction("Index");
         }
     }

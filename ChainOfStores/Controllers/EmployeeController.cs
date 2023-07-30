@@ -57,6 +57,7 @@ namespace ChainOfStores.Controllers
             {
                 _db.Employees.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Employee added successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -78,7 +79,8 @@ namespace ChainOfStores.Controllers
             if (ModelState.IsValid)
             {
                 _db.Employees.Update(obj);
-                _db.SaveChanges(true);
+                _db.SaveChanges();
+                TempData["success"] = "Employee updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -103,6 +105,7 @@ namespace ChainOfStores.Controllers
                 return NotFound();
             _db.Employees.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "Employee deleted successfully";
             return RedirectToAction("Index");
         }
     }
