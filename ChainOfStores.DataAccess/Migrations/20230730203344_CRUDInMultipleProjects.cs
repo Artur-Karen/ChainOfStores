@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace ChainOfStores.Migrations
+namespace ChainOfStores.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class ModelCreation : Migration
+    public partial class CRUDInMultipleProjects : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

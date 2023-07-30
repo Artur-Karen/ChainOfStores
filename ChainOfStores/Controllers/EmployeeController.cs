@@ -1,4 +1,4 @@
-﻿using ChainOfStores.Data;
+﻿using ChainOfStores.DataAccess.Data;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;

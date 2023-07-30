@@ -1,6 +1,5 @@
-using ChainOfStores.Data;
 using Microsoft.EntityFrameworkCore;
-
+using ChainOfStores.DataAccess.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

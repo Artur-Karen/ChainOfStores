@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 
-namespace ChainOfStores.Data
+namespace ChainOfStores.DataAccess.Data
 {
     public class ApplicationDbContext:DbContext
     {
