@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -8,41 +9,15 @@ namespace ChainOfStores.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public EmployeeController(ApplicationDbContext db)
+        private readonly IEmployeeRepository _employeeRepository;
+        public EmployeeController(IEmployeeRepository db)
         {
-            _db = db;
+            _employeeRepository = db;
         }
         public IActionResult Index()
         {
-            List<Employee> objEmployeesList = _db.Employees.ToList();
-            List<Salary> objSalariesList = _db.Salaries.ToList();
-            List<Role> objRolesList = _db.Roles.ToList();
-            List<Bakery> objBakeriesList = _db.Bakeries.ToList();
-            List<Shop> objShopsList = _db.Shops.ToList();
-
-            foreach (var objEmployee in objEmployeesList)
-            {
-                for (int j = 1; j <= objSalariesList.Count; j++)
-                {
-                    if (objEmployee.SalaryId == j)
-                    {
-                        //For Manager role
-                        if (objEmployee.RoleId == 1)
-                        {
-                            int result = DateTime.Now.Year - objEmployee.DateOfEmployment.Year;
-                            objEmployee.SalaryId = result * 20 + objSalariesList[j - 1].BaseSalary;
-                        }
-                        else
-                        {
-                            int result = DateTime.Now.Year - objEmployee.DateOfEmployment.Year;
-                            objEmployee.SalaryId = result * 10 + objSalariesList[j - 1].BaseSalary;
-                        }
-                    }
-                }
-            }
-
-            return View(objEmployeesList);
+            List<Employee> objEmployeeList = _employeeRepository.GetAll().ToList();
+            return View(objEmployeeList);
         }
 
         public IActionResult Create()
@@ -55,8 +30,8 @@ namespace ChainOfStores.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Employees.Add(obj);
-                _db.SaveChanges();
+                _employeeRepository.Add(obj);
+                _employeeRepository.Save();
                 TempData["success"] = "Employee added successfully";
                 return RedirectToAction("Index");
             }
@@ -67,7 +42,7 @@ namespace ChainOfStores.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Employee employeeFromDb = _db.Employees.FirstOrDefault(x => x.Id == id);
+            Employee employeeFromDb = _employeeRepository.Get(x => x.Id == id);
             if (employeeFromDb == null)
                 return NotFound();
             return View(employeeFromDb);
@@ -78,8 +53,8 @@ namespace ChainOfStores.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Employees.Update(obj);
-                _db.SaveChanges();
+                _employeeRepository.Update(obj);
+                _employeeRepository.Save();
                 TempData["success"] = "Employee updated successfully";
                 return RedirectToAction("Index");
             }
@@ -91,7 +66,7 @@ namespace ChainOfStores.Controllers
         {
             if(id == 0)
                 return NotFound();
-            Employee employeeFromDb = _db.Employees.FirstOrDefault(u=>u.Id == id);
+            Employee employeeFromDb = _employeeRepository.Get(u=>u.Id == id);
             if(employeeFromDb == null)
                 return NotFound();
             return View(employeeFromDb);
@@ -100,11 +75,11 @@ namespace ChainOfStores.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Employee? obj = _db.Employees.FirstOrDefault(u=> u.Id == id);
+            Employee? obj = _employeeRepository.Get(u=> u.Id == id);
             if(obj == null)
                 return NotFound();
-            _db.Employees.Remove(obj);
-            _db.SaveChanges();
+            _employeeRepository.Remove(obj);
+            _employeeRepository.Save();
             TempData["success"] = "Employee deleted successfully";
             return RedirectToAction("Index");
         }
