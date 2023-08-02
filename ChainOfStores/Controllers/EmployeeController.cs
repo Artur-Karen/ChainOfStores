@@ -9,14 +9,14 @@ namespace ChainOfStores.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeController(IEmployeeRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public EmployeeController(IUnitOfWork unitOfWork)
         {
-            _employeeRepository = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Employee> objEmployeeList = _employeeRepository.GetAll().ToList();
+            List<Employee> objEmployeeList = _unitOfWork.Employee.GetAll().ToList();
             return View(objEmployeeList);
         }
 
@@ -30,8 +30,8 @@ namespace ChainOfStores.Controllers
         {
             if (ModelState.IsValid)
             {
-                _employeeRepository.Add(obj);
-                _employeeRepository.Save();
+                _unitOfWork.Employee.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Employee added successfully";
                 return RedirectToAction("Index");
             }
@@ -42,7 +42,7 @@ namespace ChainOfStores.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Employee employeeFromDb = _employeeRepository.Get(x => x.Id == id);
+            Employee employeeFromDb = _unitOfWork.Employee.Get(x => x.Id == id);
             if (employeeFromDb == null)
                 return NotFound();
             return View(employeeFromDb);
@@ -53,8 +53,8 @@ namespace ChainOfStores.Controllers
         {
             if (ModelState.IsValid)
             {
-                _employeeRepository.Update(obj);
-                _employeeRepository.Save();
+                _unitOfWork.Employee.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Employee updated successfully";
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace ChainOfStores.Controllers
         {
             if(id == 0)
                 return NotFound();
-            Employee employeeFromDb = _employeeRepository.Get(u=>u.Id == id);
+            Employee employeeFromDb = _unitOfWork.Employee.Get(u=>u.Id == id);
             if(employeeFromDb == null)
                 return NotFound();
             return View(employeeFromDb);
@@ -75,11 +75,11 @@ namespace ChainOfStores.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Employee? obj = _employeeRepository.Get(u=> u.Id == id);
+            Employee? obj = _unitOfWork.Employee.Get(u=> u.Id == id);
             if(obj == null)
                 return NotFound();
-            _employeeRepository.Remove(obj);
-            _employeeRepository.Save();
+            _unitOfWork.Employee.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Employee deleted successfully";
             return RedirectToAction("Index");
         }

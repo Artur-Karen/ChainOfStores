@@ -1,6 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
 using ChainOfStores.DataAccess.Repository.IRepository;
-using ChainOfStores.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace ChainOfStores.DataAccess.Repository
 {
-    public class EmployeeRepository:Repository<Employee>,IEmployeeRepository
+    public class UnitOfWork : IUnitOfWork
     {
         private ApplicationDbContext _db;
-        public EmployeeRepository(ApplicationDbContext db):base(db)
+        public IEmployeeRepository Employee { get; private set; }
+        public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
+            Employee = new EmployeeRepository(_db);
         }
-        public void Update(Employee obj) 
+        public void Save()
         {
-            _db.Employees.Update(obj);
+            _db.SaveChanges();
         }
     }
 }
