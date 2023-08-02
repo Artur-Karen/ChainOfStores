@@ -2,8 +2,9 @@
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ChainOfStores.Controllers
+namespace ChainOfStores.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class SalaryController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -25,7 +26,7 @@ namespace ChainOfStores.Controllers
         [HttpPost]
         public IActionResult Create(Salary obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _db.Salaries.Add(obj);
                 _db.SaveChanges();
@@ -37,10 +38,10 @@ namespace ChainOfStores.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id==0)
+            if (id == 0)
                 return NotFound();
             Salary salaryFromDb = _db.Salaries.FirstOrDefault(s => s.Id == id);
-            if(salaryFromDb==null)
+            if (salaryFromDb == null)
                 return NotFound();
             return View(salaryFromDb);
         }
@@ -48,7 +49,7 @@ namespace ChainOfStores.Controllers
         [HttpPost]
         public IActionResult Edit(Salary obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _db.Salaries.Update(obj);
                 _db.SaveChanges();
@@ -60,19 +61,19 @@ namespace ChainOfStores.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if (id==0)
+            if (id == 0)
                 return NotFound();
-            Salary salaryFromDb = _db.Salaries.FirstOrDefault(u=>u.Id==id);
-            if(salaryFromDb==null)
+            Salary salaryFromDb = _db.Salaries.FirstOrDefault(u => u.Id == id);
+            if (salaryFromDb == null)
                 return NotFound();
             return View(salaryFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost (int? id)
+        public IActionResult DeletePost(int? id)
         {
-            Salary? obj = _db.Salaries.FirstOrDefault(u=>u.Id == id);
-            if (obj==null)
+            Salary? obj = _db.Salaries.FirstOrDefault(u => u.Id == id);
+            if (obj == null)
                 return NotFound();
             _db.Salaries.Remove(obj);
             _db.SaveChanges();

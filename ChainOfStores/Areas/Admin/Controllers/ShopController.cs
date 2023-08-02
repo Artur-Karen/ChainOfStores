@@ -2,34 +2,34 @@
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ChainOfStores.Controllers
+namespace ChainOfStores.Areas.Admin.Controllers
 {
-    public class RoleController : Controller
+    [Area("Admin")]
+    public class ShopController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public RoleController(ApplicationDbContext db)
+        public ShopController(ApplicationDbContext db)
         {
             _db = db;
         }
         public IActionResult Index()
         {
-            List<Role> objRoleList = _db.Roles.ToList();
-            return View(objRoleList);
+            List<Shop> objShopsList = _db.Shops.ToList();
+            return View(objShopsList);
         }
 
-        public IActionResult Create() 
+        public IActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
-        public IActionResult Create(Role obj) 
+        public IActionResult Create(Shop obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _db.Roles.Add(obj);
+                _db.Shops.Add(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Role created successfully";
+                TempData["success"] = "Shop created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -37,22 +37,22 @@ namespace ChainOfStores.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == 0)
+            if (id == 0)
                 return NotFound();
-            Role roleFromDb = _db.Roles.FirstOrDefault(x => x.Id == id);
-            if(roleFromDb == null)
+            Shop shopFromDb = _db.Shops.FirstOrDefault(x => x.Id == id);
+            if (shopFromDb == null)
                 return NotFound();
-            return View(roleFromDb);
+            return View(shopFromDb);
         }
 
         [HttpPost]
-        public IActionResult Edit(Role obj) 
+        public IActionResult Edit(Shop obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _db.Roles.Update(obj);
+                _db.Shops.Update(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Role updated successfully";
+                TempData["success"] = "Shop updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -62,23 +62,22 @@ namespace ChainOfStores.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Role roleFromDb = _db.Roles.FirstOrDefault(u=>u.Id == id);
-            if (roleFromDb == null)
+            Shop shopFromDb = _db.Shops.FirstOrDefault(u => u.Id == id);
+            if (shopFromDb == null)
                 return NotFound();
-            return View(roleFromDb);
+            return View(shopFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Role? obj = _db.Roles.FirstOrDefault(u=> u.Id == id);
-            if(obj == null)
+            Shop? obj = _db.Shops.FirstOrDefault(s => s.Id == id);
+            if (obj == null)
                 return NotFound();
-            _db.Roles.Remove(obj);
+            _db.Shops.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Role deleted successfully";
+            TempData["success"] = "Shop deleted successfully";
             return RedirectToAction("Index");
         }
-
     }
 }

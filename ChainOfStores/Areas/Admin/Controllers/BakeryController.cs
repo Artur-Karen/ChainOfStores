@@ -2,22 +2,24 @@
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
 
-namespace ChainOfStores.Controllers
+namespace ChainOfStores.Areas.Admin.Controllers
 {
-    public class StorageController : Controller
+    [Area("Admin")]
+    public class BakeryController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public StorageController(ApplicationDbContext db)
+
+        public BakeryController(ApplicationDbContext db)
         {
             _db = db;
         }
+
         public IActionResult Index()
         {
             List<Shop> objShopsList = _db.Shops.ToList();
-            List<Storage> objStorageList= _db.Storages.ToList();
-            return View(objStorageList);
+            List<Bakery> objBakeryList = _db.Bakeries.ToList();
+            return View(objBakeryList);
         }
 
         public IActionResult Create()
@@ -26,48 +28,48 @@ namespace ChainOfStores.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Storage obj)
+        public IActionResult Create(Bakery obj)
         {
-            List<Shop> shops=_db.Shops.ToList();
-            List<Storage> storages= _db.Storages.ToList();
-            if(ModelState.IsValid)
+            List<Shop> shops = _db.Shops.ToList();
+            List<Bakery> bakeries = _db.Bakeries.ToList();
+            if (ModelState.IsValid)
             {
-                if (storages.Count() < shops.Count())
+                if (bakeries.Count() < shops.Count())
                 {
-                    _db.Storages.Add(obj);
+                    _db.Bakeries.Add(obj);
                     _db.SaveChanges();
-                    TempData["success"] = "Storage created successfully";
+                    TempData["success"] = "Bakery created successfully";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["error"] = "All shops already have storages";
+                    //ModelState.AddModelError("ShopId", "The all shops already have bakeries");
+                    TempData["error"] = "All shops already have bakeries";
                     return RedirectToAction("Index");
-                    //ModelState.AddModelError("ShopId", "The all shops already have storages");
                 }
             }
-            
+
             return View();
         }
 
         public IActionResult Edit(int? id)
         {
-            if(id==0)
+            if (id == 0)
                 return NotFound();
-            Storage storageFromDb = _db.Storages.FirstOrDefault(s => s.Id==id);
-            if (storageFromDb == null)
+            Bakery bakeryFromDb = _db.Bakeries.FirstOrDefault(b => b.Id == id);
+            if (bakeryFromDb == null)
                 return NotFound();
-            return View(storageFromDb);
+            return View(bakeryFromDb);
         }
 
         [HttpPost]
-        public IActionResult Edit(Storage obj)
+        public ActionResult Edit(Bakery obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Storages.Update(obj);
+                _db.Bakeries.Update(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Storage updated successfully";
+                TempData["success"] = "Bakery updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -76,23 +78,23 @@ namespace ChainOfStores.Controllers
         public IActionResult Delete(int? id)
         {
             List<Shop> shopsFromDb = _db.Shops.ToList();
-            if(id==0)
+            if (id == 0)
                 return NotFound();
-            Storage storageFromDb = _db.Storages.FirstOrDefault(u=>u.Id==id);
-            if(storageFromDb == null)
+            Bakery bakeryFromDb = _db.Bakeries.FirstOrDefault(u => u.Id == id);
+            if (bakeryFromDb == null)
                 return NotFound();
-            return View(storageFromDb);
+            return View(bakeryFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Storage? obj = _db.Storages.FirstOrDefault(u=>u.Id == id);
+            Bakery? obj = _db.Bakeries.FirstOrDefault(u => u.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Storages.Remove(obj);
+            _db.Bakeries.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Storage deleted successfully";
+            TempData["success"] = "Bakery deleted successfully";
             return RedirectToAction("Index");
         }
     }

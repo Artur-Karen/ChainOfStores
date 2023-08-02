@@ -22,10 +22,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -33,22 +33,22 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Employee" asp-action="Index">Employee</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Employee" asp-action="Index">Employee</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Shop" asp-action="Index">Shop</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Shop" asp-action="Index">Shop</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Bakery" asp-action="Index">Bakery</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Bakery" asp-action="Index">Bakery</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Storage" asp-action="Index">Storage</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Storage" asp-action="Index">Storage</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Salary" asp-action="Index">Salary</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Salary" asp-action="Index">Salary</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Role" asp-action="Index">Role</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a>
                                 </li>
                             </ul>
                         </div>

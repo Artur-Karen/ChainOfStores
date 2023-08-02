@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Xml.Linq;
 
-namespace ChainOfStores.Controllers
+namespace ChainOfStores.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -64,10 +65,10 @@ namespace ChainOfStores.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id == 0)
+            if (id == 0)
                 return NotFound();
-            Employee employeeFromDb = _unitOfWork.Employee.Get(u=>u.Id == id);
-            if(employeeFromDb == null)
+            Employee employeeFromDb = _unitOfWork.Employee.Get(u => u.Id == id);
+            if (employeeFromDb == null)
                 return NotFound();
             return View(employeeFromDb);
         }
@@ -75,8 +76,8 @@ namespace ChainOfStores.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Employee? obj = _unitOfWork.Employee.Get(u=> u.Id == id);
-            if(obj == null)
+            Employee? obj = _unitOfWork.Employee.Get(u => u.Id == id);
+            if (obj == null)
                 return NotFound();
             _unitOfWork.Employee.Remove(obj);
             _unitOfWork.Save();
