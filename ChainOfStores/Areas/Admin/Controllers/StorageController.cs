@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -9,15 +10,15 @@ namespace ChainOfStores.Areas.Admin.Controllers
     [Area("Admin")]
     public class StorageController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public StorageController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public StorageController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Shop> objShopsList = _db.Shops.ToList();
-            List<Storage> objStorageList = _db.Storages.ToList();
+            List<Shop> objShopsList = _unitOfWork.Shop.GetAll().ToList();
+            List<Storage> objStorageList = _unitOfWork.Storage.GetAll().ToList();
             return View(objStorageList);
         }
 
@@ -29,14 +30,14 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Storage obj)
         {
-            List<Shop> shops = _db.Shops.ToList();
-            List<Storage> storages = _db.Storages.ToList();
+            List<Shop> shops = _unitOfWork.Shop.GetAll().ToList();
+            List<Storage> storages = _unitOfWork.Storage.GetAll().ToList();
             if (ModelState.IsValid)
             {
                 if (storages.Count() < shops.Count())
                 {
-                    _db.Storages.Add(obj);
-                    _db.SaveChanges();
+                    _unitOfWork.Storage.Add(obj);
+                    _unitOfWork.Save();
                     TempData["success"] = "Storage created successfully";
                     return RedirectToAction("Index");
                 }
@@ -55,7 +56,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Storage storageFromDb = _db.Storages.FirstOrDefault(s => s.Id == id);
+            Storage storageFromDb = _unitOfWork.Storage.Get(s => s.Id == id);
             if (storageFromDb == null)
                 return NotFound();
             return View(storageFromDb);
@@ -66,8 +67,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Storages.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Storage.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Storage updated successfully";
                 return RedirectToAction("Index");
             }
@@ -76,10 +77,10 @@ namespace ChainOfStores.Areas.Admin.Controllers
 
         public IActionResult Delete(int? id)
         {
-            List<Shop> shopsFromDb = _db.Shops.ToList();
+            List<Shop> shopsFromDb = _unitOfWork.Shop.GetAll().ToList();
             if (id == 0)
                 return NotFound();
-            Storage storageFromDb = _db.Storages.FirstOrDefault(u => u.Id == id);
+            Storage storageFromDb = _unitOfWork.Storage.Get(u => u.Id == id);
             if (storageFromDb == null)
                 return NotFound();
             return View(storageFromDb);
@@ -88,11 +89,11 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Storage? obj = _db.Storages.FirstOrDefault(u => u.Id == id);
+            Storage? obj = _unitOfWork.Storage.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Storages.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Storage.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Storage deleted successfully";
             return RedirectToAction("Index");
         }

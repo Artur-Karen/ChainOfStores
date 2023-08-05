@@ -18,6 +18,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Employee> objEmployeeList = _unitOfWork.Employee.GetAll().ToList();
+            
             return View(objEmployeeList);
         }
 

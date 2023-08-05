@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,14 @@ namespace ChainOfStores.Areas.Admin.Controllers
     [Area("Admin")]
     public class SalaryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public SalaryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public SalaryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Salary> objSalaryList = _db.Salaries.ToList();
+            List<Salary> objSalaryList = _unitOfWork.Salary.GetAll().ToList();
             return View(objSalaryList);
         }
 
@@ -28,8 +29,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Salaries.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Salary.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Salary created successfully";
                 return RedirectToAction("Index");
             }
@@ -40,7 +41,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Salary salaryFromDb = _db.Salaries.FirstOrDefault(s => s.Id == id);
+            Salary salaryFromDb = _unitOfWork.Salary.Get(s => s.Id == id);
             if (salaryFromDb == null)
                 return NotFound();
             return View(salaryFromDb);
@@ -51,8 +52,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Salaries.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Salary.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Salary updated successfully";
                 return RedirectToAction("Index");
             }
@@ -63,7 +64,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Salary salaryFromDb = _db.Salaries.FirstOrDefault(u => u.Id == id);
+            Salary salaryFromDb = _unitOfWork.Salary.Get(u => u.Id == id);
             if (salaryFromDb == null)
                 return NotFound();
             return View(salaryFromDb);
@@ -72,11 +73,11 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Salary? obj = _db.Salaries.FirstOrDefault(u => u.Id == id);
+            Salary? obj = _unitOfWork.Salary.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Salaries.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Salary.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Salary deleted successfully";
             return RedirectToAction("Index");
         }

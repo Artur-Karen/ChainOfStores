@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,17 +9,17 @@ namespace ChainOfStores.Areas.Admin.Controllers
     [Area("Admin")]
     public class BakeryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOFWork;
 
-        public BakeryController(ApplicationDbContext db)
+        public BakeryController(IUnitOfWork unitOFWork)
         {
-            _db = db;
+            _unitOFWork = unitOFWork;
         }
 
         public IActionResult Index()
         {
-            List<Shop> objShopsList = _db.Shops.ToList();
-            List<Bakery> objBakeryList = _db.Bakeries.ToList();
+            List<Shop> objShopsList = _unitOFWork.Shop.GetAll().ToList();
+            List<Bakery> objBakeryList = _unitOFWork.Bakery.GetAll().ToList();
             return View(objBakeryList);
         }
 
@@ -30,14 +31,14 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Bakery obj)
         {
-            List<Shop> shops = _db.Shops.ToList();
-            List<Bakery> bakeries = _db.Bakeries.ToList();
+            List<Shop> shops = _unitOFWork.Shop.GetAll().ToList();
+            List<Bakery> bakeries = _unitOFWork.Bakery.GetAll().ToList();
             if (ModelState.IsValid)
             {
                 if (bakeries.Count() < shops.Count())
                 {
-                    _db.Bakeries.Add(obj);
-                    _db.SaveChanges();
+                    _unitOFWork.Bakery.Add(obj);
+                    _unitOFWork.Save();
                     TempData["success"] = "Bakery created successfully";
                     return RedirectToAction("Index");
                 }
@@ -56,7 +57,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Bakery bakeryFromDb = _db.Bakeries.FirstOrDefault(b => b.Id == id);
+            Bakery bakeryFromDb = _unitOFWork.Bakery.Get(b => b.Id == id);
             if (bakeryFromDb == null)
                 return NotFound();
             return View(bakeryFromDb);
@@ -67,8 +68,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Bakeries.Update(obj);
-                _db.SaveChanges();
+                _unitOFWork.Bakery.Update(obj);
+                _unitOFWork.Save();
                 TempData["success"] = "Bakery updated successfully";
                 return RedirectToAction("Index");
             }
@@ -77,10 +78,10 @@ namespace ChainOfStores.Areas.Admin.Controllers
 
         public IActionResult Delete(int? id)
         {
-            List<Shop> shopsFromDb = _db.Shops.ToList();
+            List<Shop> shopsFromDb = _unitOFWork.Shop.GetAll().ToList();
             if (id == 0)
                 return NotFound();
-            Bakery bakeryFromDb = _db.Bakeries.FirstOrDefault(u => u.Id == id);
+            Bakery bakeryFromDb = _unitOFWork.Bakery.Get(u => u.Id == id);
             if (bakeryFromDb == null)
                 return NotFound();
             return View(bakeryFromDb);
@@ -89,11 +90,11 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Bakery? obj = _db.Bakeries.FirstOrDefault(u => u.Id == id);
+            Bakery? obj = _unitOFWork.Bakery.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Bakeries.Remove(obj);
-            _db.SaveChanges();
+            _unitOFWork.Bakery.Remove(obj);
+            _unitOFWork.Save();
             TempData["success"] = "Bakery deleted successfully";
             return RedirectToAction("Index");
         }

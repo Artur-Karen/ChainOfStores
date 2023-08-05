@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,14 @@ namespace ChainOfStores.Areas.Admin.Controllers
     [Area("Admin")]
     public class RoleController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public RoleController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public RoleController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Role> objRoleList = _db.Roles.ToList();
+            List<Role> objRoleList = _unitOfWork.Role.GetAll().ToList();
             return View(objRoleList);
         }
 
@@ -28,8 +29,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Roles.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Role.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Role created successfully";
                 return RedirectToAction("Index");
             }
@@ -40,7 +41,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Role roleFromDb = _db.Roles.FirstOrDefault(x => x.Id == id);
+            Role roleFromDb = _unitOfWork.Role.Get(x => x.Id == id);
             if (roleFromDb == null)
                 return NotFound();
             return View(roleFromDb);
@@ -51,8 +52,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Roles.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Role.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Role updated successfully";
                 return RedirectToAction("Index");
             }
@@ -63,7 +64,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Role roleFromDb = _db.Roles.FirstOrDefault(u => u.Id == id);
+            Role roleFromDb = _unitOfWork.Role.Get(u => u.Id == id);
             if (roleFromDb == null)
                 return NotFound();
             return View(roleFromDb);
@@ -72,11 +73,11 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Role? obj = _db.Roles.FirstOrDefault(u => u.Id == id);
+            Role? obj = _unitOfWork.Role.Get(u => u.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Roles.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Role.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Role deleted successfully";
             return RedirectToAction("Index");
         }

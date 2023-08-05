@@ -1,4 +1,5 @@
 ﻿using ChainOfStores.DataAccess.Data;
+using ChainOfStores.DataAccess.Repository.IRepository;
 using ChainOfStores.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,14 @@ namespace ChainOfStores.Areas.Admin.Controllers
     [Area("Admin")]
     public class ShopController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public ShopController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public ShopController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork=unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Shop> objShopsList = _db.Shops.ToList();
+            List<Shop> objShopsList = _unitOfWork.Shop.GetAll().ToList();
             return View(objShopsList);
         }
 
@@ -27,8 +28,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Shops.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Shop.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Shop created successfully";
                 return RedirectToAction("Index");
             }
@@ -39,7 +40,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Shop shopFromDb = _db.Shops.FirstOrDefault(x => x.Id == id);
+            Shop shopFromDb = _unitOfWork.Shop.Get(x => x.Id == id);
             if (shopFromDb == null)
                 return NotFound();
             return View(shopFromDb);
@@ -50,8 +51,8 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Shops.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Shop.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Shop updated successfully";
                 return RedirectToAction("Index");
             }
@@ -62,7 +63,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
         {
             if (id == 0)
                 return NotFound();
-            Shop shopFromDb = _db.Shops.FirstOrDefault(u => u.Id == id);
+            Shop shopFromDb = _unitOfWork.Shop.Get(u => u.Id == id);
             if (shopFromDb == null)
                 return NotFound();
             return View(shopFromDb);
@@ -71,11 +72,11 @@ namespace ChainOfStores.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Shop? obj = _db.Shops.FirstOrDefault(s => s.Id == id);
+            Shop? obj = _unitOfWork.Shop.Get(s => s.Id == id);
             if (obj == null)
                 return NotFound();
-            _db.Shops.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Shop.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Shop deleted successfully";
             return RedirectToAction("Index");
         }
