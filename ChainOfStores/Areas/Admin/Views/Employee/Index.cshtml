@@ -13,7 +13,7 @@
             <div class="col-6">
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Add New Employee</a>
+                <a asp-controller="Employee" asp-action="Upsert" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Add New Employee</a>
             </div>
         </div>
         <table class="table table-bordered table-striped">
@@ -37,14 +37,12 @@
                         <td>@obj.LastName</td>
                         <td>@obj.PhoneNumber</td>
                         <td>@obj.DateOfEmployment.ToShortDateString()</td>
-                        <td>
-                            @obj.ShopId@obj.StorageId@obj.BakeryId
-                        </td>
+                        <td>@obj.Shop@obj.Storage@obj.Bakery</td>
                         <td>@obj.SalaryId</td>
-                        <td>@obj.RoleId</td>
+                        <td>@obj.Role.Name</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Employee" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
+                                <a asp-controller="Employee" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
                                 <a asp-controller="Employee" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2"><i class="bi bi-trash3"></i>Delete</a>
                             </div>
                         </td>

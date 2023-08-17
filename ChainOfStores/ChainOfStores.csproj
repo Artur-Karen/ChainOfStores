@@ -20,4 +20,8 @@
     <ProjectReference Include="..\ChainOfStores.DataAccess\ChainOfStores.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Employee\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,19 +19,21 @@ namespace ChainOfStores.Models
         public int? ShopId { get; set; }
         [ForeignKey("ShopId")]
         public Shop? Shop { get; set; }
-
         public int? BakeryId { get; set; }
         [ForeignKey("BakeryId")]
         public Bakery? Bakery { get; set; }
-
         public int? StorageId { get; set; }
         [ForeignKey("StorageId")]
         public Storage? Storage { get; set; }
         public int? SalaryId { get; set; }
         [ForeignKey("SalaryId")]
+        [ValidateNever]
         public Salary? Salary { get; set; }
         public int? RoleId { get; set; }
         [ForeignKey("RoleId")]
+        [ValidateNever]
         public Role? Role { get; set; }
+        [ValidateNever]
+        public string ImageURL { get; set; }
     }
 }

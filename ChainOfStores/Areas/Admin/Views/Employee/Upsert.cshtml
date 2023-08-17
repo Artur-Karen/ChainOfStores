@@ -1,0 +1,108 @@
+﻿@model EmployeeVM
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white py-2">@(Model.Employee.Id != 0 ? "Update" : "Add") Employee</h1>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="Employee.Id" hidden />
+            <input asp-for="Employee.ImageURL" hidden />
+            <div class="row">
+                <div class="col-10">
+                    <div class="border p-3">
+                        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                        <div class="form-floating py-2 col-12">
+                            <input asp-for="Employee.FirstName" class="form-control border-0 shadow" />
+                            <label asp-for="Employee.FirstName" class="ms-2"></label>
+                            <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <input asp-for="Employee.LastName" class="form-control border-0 shadow" />
+                            <label asp-for="Employee.LastName" class="ms-2"></label>
+                            <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <input asp-for="Employee.PhoneNumber" class="form-control border-0 shadow" />
+                            <label asp-for="Employee.PhoneNumber" class="ms-2"></label>
+                            <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <input asp-for="Employee.DateOfEmployment" class="form-control border-0 shadow" />
+                            <label asp-for="Employee.DateOfEmployment" class="ms-2"></label>
+                            <span asp-validation-for="Employee.DateOfEmployment" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.Employee.SalaryId" asp-items="@Model.SalaryList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Salary--</option>
+                            </select>
+                            <label asp-for="Employee.SalaryId" class="ms-2"></label>
+                            <span asp-validation-for="Employee.SalaryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.Employee.RoleId" asp-items="@Model.RoleList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Role--</option>
+                            </select>
+                            <label asp-for="Employee.RoleId" class="ms-2"></label>
+                            <span asp-validation-for="Employee.RoleId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.Employee.ShopId" asp-items="@Model.ShopList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Shop--</option>
+                            </select>
+                            <label asp-for="Employee.ShopId" class="ms-2"></label>
+                            <span asp-validation-for="Employee.ShopId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.Employee.StorageId" asp-items="@Model.StorageList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Storage--</option>
+                            </select>
+                            <label asp-for="Employee.StorageId" class="ms-2"></label>
+                            <span asp-validation-for="Employee.StorageId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <select asp-for="@Model.Employee.BakeryId" asp-items="@Model.BakeryList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Bakery--</option>
+                            </select>
+                            <label asp-for="Employee.BakeryId" class="ms-2"></label>
+                            <span asp-validation-for="Employee.BakeryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <input type="file" name="file" class="form-control border-0 shadow" />
+                            <label asp-for="Employee.ImageURL" class="ms-2"></label>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-3">
+                                @if (Model.Employee.Id != 0)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control">Update</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary form-control">Create</button>
+                                }
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-primary form-control">Back To List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <img src="@Model.Employee.ImageURL" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        <partian name="_ValidationScriptsPartial" />
+    }
+}

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ChainOfStores.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class CRUDInMultipleProjects : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -107,7 +107,8 @@ namespace ChainOfStores.DataAccess.Migrations
                     BakeryId = table.Column<int>(type: "int", nullable: true),
                     StorageId = table.Column<int>(type: "int", nullable: true),
                     SalaryId = table.Column<int>(type: "int", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,11 +182,11 @@ namespace ChainOfStores.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "BakeryId", "DateOfEmployment", "FirstName", "LastName", "PhoneNumber", "RoleId", "SalaryId", "ShopId", "StorageId" },
+                columns: new[] { "Id", "BakeryId", "DateOfEmployment", "FirstName", "ImageURL", "LastName", "PhoneNumber", "RoleId", "SalaryId", "ShopId", "StorageId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2013, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Babken", "Harutyunyan", "044785545", 1, 1, 1, null },
-                    { 2, null, new DateTime(2019, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Saribek", "Baghdasaryan", "0995215495", 3, 1, 2, null }
+                    { 1, null, new DateTime(2013, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ara", "https://images.pexels.com/photos/39866/entrepreneur-startup-start-up-man-39866.jpeg?auto=compress&cs=tinysrgb&w=600", "Harutyunyan", "044785545", 1, 1, 1, null },
+                    { 2, null, new DateTime(2019, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Arman", "https://images.pexels.com/photos/819530/pexels-photo-819530.jpeg?auto=compress&cs=tinysrgb&w=600", "Baghdasaryan", "0995215495", 3, 1, 2, null }
                 });
 
             migrationBuilder.InsertData(
@@ -199,14 +200,14 @@ namespace ChainOfStores.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "BakeryId", "DateOfEmployment", "FirstName", "LastName", "PhoneNumber", "RoleId", "SalaryId", "ShopId", "StorageId" },
+                columns: new[] { "Id", "BakeryId", "DateOfEmployment", "FirstName", "ImageURL", "LastName", "PhoneNumber", "RoleId", "SalaryId", "ShopId", "StorageId" },
                 values: new object[,]
                 {
-                    { 3, null, new DateTime(2016, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vardush", "Dadayan", "055975542", 2, 1, null, 1 },
-                    { 4, null, new DateTime(2018, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Margush", "Babayan", "077987456", 4, 1, null, 2 },
-                    { 5, 1, new DateTime(2017, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Haykush", "Dadayan", "033123987", 4, 1, null, null },
-                    { 6, 2, new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Azgush", "Dadayan", "099546231", 5, 1, null, null },
-                    { 7, 1, new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Paycar", "Dadayan", "099548877", 5, 2, null, null }
+                    { 3, null, new DateTime(2016, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sona", "https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=600", "Dadayan", "055975542", 2, 1, null, 1 },
+                    { 4, null, new DateTime(2018, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anna", "https://images.pexels.com/photos/354951/pexels-photo-354951.jpeg?auto=compress&cs=tinysrgb&w=600", "Babayan", "077987456", 4, 1, null, 2 },
+                    { 5, 1, new DateTime(2017, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lia", "https://images.pexels.com/photos/415263/pexels-photo-415263.jpeg?auto=compress&cs=tinysrgb&w=600", "Dadayan", "033123987", 4, 1, null, null },
+                    { 6, 2, new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nane", "https://images.pexels.com/photos/415263/pexels-photo-415263.jpeg?auto=compress&cs=tinysrgb&w=600", "Dadayan", "099546231", 5, 1, null, null },
+                    { 7, 1, new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Syune", "https://images.pexels.com/photos/582039/pexels-photo-582039.jpeg?auto=compress&cs=tinysrgb&w=600", "Dadayan", "099548877", 5, 2, null, null }
                 });
 
             migrationBuilder.CreateIndex(

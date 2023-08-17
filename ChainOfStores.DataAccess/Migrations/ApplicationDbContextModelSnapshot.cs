@@ -78,6 +78,10 @@ namespace ChainOfStores.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -117,7 +121,8 @@ namespace ChainOfStores.DataAccess.Migrations
                         {
                             Id = 1,
                             DateOfEmployment = new DateTime(2013, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Babken",
+                            FirstName = "Ara",
+                            ImageURL = "https://images.pexels.com/photos/39866/entrepreneur-startup-start-up-man-39866.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Harutyunyan",
                             PhoneNumber = "044785545",
                             RoleId = 1,
@@ -128,7 +133,8 @@ namespace ChainOfStores.DataAccess.Migrations
                         {
                             Id = 2,
                             DateOfEmployment = new DateTime(2019, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Saribek",
+                            FirstName = "Arman",
+                            ImageURL = "https://images.pexels.com/photos/819530/pexels-photo-819530.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Baghdasaryan",
                             PhoneNumber = "0995215495",
                             RoleId = 3,
@@ -139,7 +145,8 @@ namespace ChainOfStores.DataAccess.Migrations
                         {
                             Id = 3,
                             DateOfEmployment = new DateTime(2016, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Vardush",
+                            FirstName = "Sona",
+                            ImageURL = "https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Dadayan",
                             PhoneNumber = "055975542",
                             RoleId = 2,
@@ -150,7 +157,8 @@ namespace ChainOfStores.DataAccess.Migrations
                         {
                             Id = 4,
                             DateOfEmployment = new DateTime(2018, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Margush",
+                            FirstName = "Anna",
+                            ImageURL = "https://images.pexels.com/photos/354951/pexels-photo-354951.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Babayan",
                             PhoneNumber = "077987456",
                             RoleId = 4,
@@ -162,7 +170,8 @@ namespace ChainOfStores.DataAccess.Migrations
                             Id = 5,
                             BakeryId = 1,
                             DateOfEmployment = new DateTime(2017, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Haykush",
+                            FirstName = "Lia",
+                            ImageURL = "https://images.pexels.com/photos/415263/pexels-photo-415263.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Dadayan",
                             PhoneNumber = "033123987",
                             RoleId = 4,
@@ -173,7 +182,8 @@ namespace ChainOfStores.DataAccess.Migrations
                             Id = 6,
                             BakeryId = 2,
                             DateOfEmployment = new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Azgush",
+                            FirstName = "Nane",
+                            ImageURL = "https://images.pexels.com/photos/415263/pexels-photo-415263.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Dadayan",
                             PhoneNumber = "099546231",
                             RoleId = 5,
@@ -184,7 +194,8 @@ namespace ChainOfStores.DataAccess.Migrations
                             Id = 7,
                             BakeryId = 1,
                             DateOfEmployment = new DateTime(2014, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Paycar",
+                            FirstName = "Syune",
+                            ImageURL = "https://images.pexels.com/photos/582039/pexels-photo-582039.jpeg?auto=compress&cs=tinysrgb&w=600",
                             LastName = "Dadayan",
                             PhoneNumber = "099548877",
                             RoleId = 5,
