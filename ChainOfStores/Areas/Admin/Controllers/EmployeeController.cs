@@ -21,30 +21,30 @@ namespace ChainOfStores.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Role> roles = _unitOfWork.Role.GetAll().ToList();
-            List<Salary> salaries = _unitOfWork.Salary.GetAll().ToList();
-            List<Employee> EmployeeList = _unitOfWork.Employee.GetAll().ToList();
-            foreach(var Employee in EmployeeList)
-            {
-                for(int i = 1; i <= salaries.Count; i++)
-                {
-                    if(Employee.SalaryId == i)
-                    {
-                        if (Employee.Role.Name=="Manager")
-                        {
-                            int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
-                            Employee.SalaryId = seniority * 15 + salaries[i-1].BaseSalary;
-                        }
-                        else
-                        {
-                            int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
-                            Employee.SalaryId = seniority * 10 + salaries[i - 1].BaseSalary;
-                        }
-                    }
-                }
-            }
-            List<Employee> objEmployeeList = _unitOfWork.Employee.GetAll(includeProperties:
-                "Shop,Storage,Bakery,Salary,Role").ToList();
+            //List<Role> roles = _unitOfWork.Role.GetAll().ToList();
+            //List<Salary> salaries = _unitOfWork.Salary.GetAll().ToList();
+            //List<Employee> EmployeeList = _unitOfWork.Employee.GetAll().ToList();
+            //foreach(var Employee in EmployeeList)
+            //{
+            //    for(int i = 1; i <= salaries.Count; i++)
+            //    {
+            //        if(Employee.SalaryId == i)
+            //        {
+            //            if (Employee.Role.Name=="Manager")
+            //            {
+            //                int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
+            //                Employee.SalaryId = seniority * 15 + salaries[i-1].BaseSalary;
+            //            }
+            //            else
+            //            {
+            //                int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
+            //                Employee.SalaryId = seniority * 10 + salaries[i - 1].BaseSalary;
+            //            }
+            //        }
+            //    }
+            //}
+     
+            List<Employee> objEmployeeList = _unitOfWork.Employee.GetAll(includeProperties:"Salary,Role").ToList();
             return View(objEmployeeList);
         }
 
@@ -167,26 +167,59 @@ namespace ChainOfStores.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Delete(int? id)
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (id == 0)
-                return NotFound();
-            Employee employeeFromDb = _unitOfWork.Employee.Get(u => u.Id == id);
-            if (employeeFromDb == null)
-                return NotFound();
-            return View(employeeFromDb);
+            List<Employee> objEmployeeList = _unitOfWork.Employee.GetAll(includeProperties: "Salary,Role").ToList();
+            List<Role> roles = _unitOfWork.Role.GetAll().ToList();
+            List<Salary> salaries = _unitOfWork.Salary.GetAll().ToList();
+            
+            foreach (var Employee in objEmployeeList)
+            {
+                for (int i = 1; i <= salaries.Count; i++)
+                {
+                    if (Employee.SalaryId == i)
+                    {
+                        if (Employee.RoleId == 1)
+                        {
+                            int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
+                            Employee.SalaryId = seniority * 15 + salaries[i - 1].BaseSalary;
+                        }
+                        else
+                        {
+                            int seniority = DateTime.Now.Year - Employee.DateOfEmployment.Year;
+                            Employee.SalaryId = seniority * 10 + salaries[i - 1].BaseSalary;
+                        }
+                    }
+                }
+            }
+            
+            return Json(new { data = objEmployeeList });
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
-            Employee? obj = _unitOfWork.Employee.Get(u => u.Id == id);
-            if (obj == null)
-                return NotFound();
-            _unitOfWork.Employee.Remove(obj);
+            var employeeToBeDeleted = _unitOfWork.Employee.Get(u => u.Id == id);
+            if (employeeToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, employeeToBeDeleted.ImageURL.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            _unitOfWork.Employee.Remove(employeeToBeDeleted);
             _unitOfWork.Save();
-            TempData["success"] = "Employee deleted successfully";
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, message = "Delete Successful" });
         }
+
+        #endregion
     }
 }
