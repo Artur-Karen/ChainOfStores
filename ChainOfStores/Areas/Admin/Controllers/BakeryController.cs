@@ -18,6 +18,7 @@ namespace ChainOfStores.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            List<Shop> objShopList=_unitOFWork.Shop.GetAll().ToList();
             List<Bakery> objBakeryList = _unitOFWork.Bakery.GetAll().ToList();
             return View(objBakeryList);
         }

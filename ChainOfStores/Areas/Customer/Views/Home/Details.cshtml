@@ -1,0 +1,49 @@
+﻿@model Employee
+
+<form method="post">
+    <div class="card shadow border-0 mt-4 mb-4">
+        <div class="card-header bg-secondary bg-gradient text-light py-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-white text-uppercase">@Model.LastName</h3>
+                    <p class="text-white-50 fw-semibold mb-0"> @Model.FirstName</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="py-3">
+                <div class="row">
+                    <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                        <a asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                            <small>Back to home</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+                        <img src="@Model.ImageURL" width="100%" class="rounded" />
+                    </div>
+                    <div class="col-12 col-lg-6 offset-lg-1">                       
+                        <div class="row ps-2">
+                            <h6 class="text-dark text-opacity-50  pb-2">
+                                Employee's salary in $ :
+                                <span class="text-decoration-underline">
+                                    @Model.SalaryId $
+                                </span>
+                            </h6>
+                            <h6 class="text-dark text-opacity-50  pb-2">
+                                Employee's role :
+                                <span class="text-decoration-underline">
+                                    @Model.Role.Name
+                                </span>
+                            </h6>
+                            <p>
+                                Date of Employment : @Model.DateOfEmployment.ToShortDateString()
+                            </p>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
